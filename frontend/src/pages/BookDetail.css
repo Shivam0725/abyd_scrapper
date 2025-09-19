@@ -1,0 +1,35 @@
+.detail-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px 10px;
+}
+.detail-card {
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+.detail-card img {
+  max-width: 100%;
+  height: 300px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+.detail-link {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.detail-link:hover { background-color: #0056b3; }
+.back-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #333;
+  text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
