@@ -2,14 +2,14 @@ import { exec } from "child_process";
 import path from "path";
 import Book from "../models/Book.js";
 
-// 🔹 GET /api/books
+// GET /api/books
 export const getBooks = async (req, res) => {
   try {
     const { page = 1, limit = 12, title, rating, inStock, minPrice, maxPrice } = req.query;
 
     const query = {};
 
-    // 🔍 Title fuzzy search (multi-word safe)
+    //  Title fuzzy search (multi-word safe)
     if (title) {
       const words = title.trim().split(/\s+/).filter(Boolean);
       if (words.length > 0) {
@@ -35,7 +35,7 @@ export const getBooks = async (req, res) => {
 
     const skip = (Number(page) - 1) * Number(limit);
 
-    // 🪵 Debug logs
+    // Debug logs
     console.log("📥 Incoming filters:", { title, rating, inStock, minPrice, maxPrice });
     console.log("🛠 Built Mongo query:", JSON.stringify(query, null, 2));
 
@@ -62,7 +62,7 @@ export const getBooks = async (req, res) => {
   }
 };
 
-// 🔹 GET /api/books/:id
+// GET /api/books/:id
 export const getBookById = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -74,7 +74,7 @@ export const getBookById = async (req, res) => {
   }
 };
 
-// 🔹 POST /api/books/refresh
+// POST /api/books/refresh
 export const refreshBooks = async (req, res) => {
   try {
     const scraperScript = path.resolve(process.cwd(), "../scraper/src/scraper.js");

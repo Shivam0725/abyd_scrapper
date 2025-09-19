@@ -15,7 +15,7 @@ const bookSchema = new mongoose.Schema(
 // index for faster search
 bookSchema.index({ title: "text" });
 
-// ✅ force "books" collection
+//  force "books" collection
 const Book = mongoose.models.Book || mongoose.model("Book", bookSchema, "books");
 
 export default Book;

@@ -2,7 +2,7 @@
 import OpenAI from "openai";
 import SearchHistory from "../models/SearchHistory.js";
 
-// ✅ ChatGPT search
+// ChatGPT search
 export const chatSearch = async (req, res) => {
   try {
     const { query } = req.body;

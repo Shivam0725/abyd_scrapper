@@ -1,4 +1,3 @@
-// frontend/src/pages/HomePage.js
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import API from "../services/api";
@@ -25,7 +24,7 @@ function HomePage() {
   const [liveResults, setLiveResults] = useState([]);
   const [chatQuery, setChatQuery] = useState("");
   const [chatAnswer, setChatAnswer] = useState("");
-  const [copiedBookId, setCopiedBookId] = useState(null); // For tooltip
+  const [copiedBookId, setCopiedBookId] = useState(null);
 
   const debouncedSearch = useDebounce(search, 300);
   const BOOKS_PER_PAGE = 10;
@@ -82,7 +81,7 @@ function HomePage() {
     navigator.clipboard.writeText(title)
       .then(() => {
         setCopiedBookId(id);
-        setTimeout(() => setCopiedBookId(null), 1500); // Tooltip disappears after 1.5s
+        setTimeout(() => setCopiedBookId(null), 1500);
       })
       .catch((err) => console.error("Failed to copy:", err));
   };
@@ -96,9 +95,8 @@ function HomePage() {
     <div className="container home-container">
       {/* Left column: books */}
       <div className="left-column">
-        {/* Logo + Title */}
-        <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
-          <img src="/assets/abyd.png" alt="ABYD Logo" width={150} style={{ marginRight: "15px" }} />
+        <div className="logo-title">
+          <img src="/assets/abyd.png" alt="ABYD Logo" />
           <h1>📚 Book Explorer</h1>
         </div>
 
@@ -139,25 +137,25 @@ function HomePage() {
             <option value="false">Out of stock</option>
           </select>
 
-          {/* Min/Max price with small buttons */}
-          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <button type="button" onClick={() => decrementPrice(setMinPrice)} style={{ padding: "4px 8px" }}>-</button>
-            <input
-              placeholder="Min Price"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
-              style={{ width: "60px", textAlign: "center" }}
-            />
-            <button type="button" onClick={() => incrementPrice(setMinPrice)} style={{ padding: "4px 8px" }}>+</button>
-
-            <button type="button" onClick={() => decrementPrice(setMaxPrice)} style={{ padding: "4px 8px" }}>-</button>
-            <input
-              placeholder="Max Price"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              style={{ width: "60px", textAlign: "center" }}
-            />
-            <button type="button" onClick={() => incrementPrice(setMaxPrice)} style={{ padding: "4px 8px" }}>+</button>
+          <div className="price-wrapper">
+            <div className="price-control">
+              <button onClick={() => decrementPrice(setMinPrice)}>-</button>
+              <input
+                placeholder="Min"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+              />
+              <button onClick={() => incrementPrice(setMinPrice)}>+</button>
+            </div>
+            <div className="price-control">
+              <button onClick={() => decrementPrice(setMaxPrice)}>-</button>
+              <input
+                placeholder="Max"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+              />
+              <button onClick={() => incrementPrice(setMaxPrice)}>+</button>
+            </div>
           </div>
         </div>
 
@@ -171,58 +169,18 @@ function HomePage() {
               <p>£{b.price}</p>
               <p>{b.rating} ⭐</p>
               <p>{b.inStock ? "✅ In Stock" : "❌ Out of Stock"}</p>
-              <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
-                <Link
-                  to={`/books/${b._id}`}
-                  style={{
-                    padding: "8px 15px",
-                    background: "#1a73e8",
-                    color: "#fff",
-                    borderRadius: "5px",
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.background = "#155ab6"}
-                  onMouseOut={(e) => e.currentTarget.style.background = "#1a73e8"}
-                >
+              <div className="card-buttons">
+                <Link className="details-btn" to={`/books/${b._id}`}>
                   Details
                 </Link>
-
-                <div style={{ position: "relative" }}>
+                <div className="copy-wrapper">
                   <button
+                    className="copy-btn"
                     onClick={() => handleCopyTitle(b._id, b.title)}
-                    style={{
-                      padding: "8px 12px",
-                      background: "#34a853",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "5px",
-                      fontWeight: "bold",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.background = "#2c8c46"}
-                    onMouseOut={(e) => e.currentTarget.style.background = "#34a853"}
                   >
                     Copy Title
                   </button>
-                  {copiedBookId === b._id && (
-                    <span style={{
-                      position: "absolute",
-                      top: "-25px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      background: "#333",
-                      color: "#fff",
-                      padding: "3px 8px",
-                      borderRadius: "4px",
-                      fontSize: "0.8rem",
-                      whiteSpace: "nowrap"
-                    }}>
-                      Copied!
-                    </span>
-                  )}
+                  {copiedBookId === b._id && <span className="tooltip">Copied!</span>}
                 </div>
               </div>
             </div>
@@ -231,47 +189,25 @@ function HomePage() {
 
         {/* Pagination */}
         <div className="pagination">
-          <button disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-            Prev
-          </button>
-          <span>
-            Page {page} / {totalPages}
-          </span>
-          <button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-            Next
-          </button>
+          <button disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Prev</button>
+          <span>Page {page} / {totalPages}</span>
+          <button disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</button>
         </div>
       </div>
 
-      {/* Right column: ABYD Assistant */}
+      {/* Right column: Chat Assistant */}
       <div className="right-column">
-        <h2 style={{ display: "flex", alignItems: "center", fontSize: "1.6rem", color: "#1a73e8" }}>
-          <img src="/assets/abyd.png" alt="ABYD Logo" width={40} style={{ marginRight: "10px" }} />
+        <h2 className="assistant-title">
+          <img src="/assets/abyd.png" alt="ABYD Logo" />
           ABYD Assistant
         </h2>
         <textarea
           placeholder="Ask about any book..."
           value={chatQuery}
           onChange={(e) => setChatQuery(e.target.value)}
-          style={{ width: "100%", minHeight: "200px", padding: "10px", borderRadius: "8px", border: "1px solid #ccc", resize: "vertical" }}
         />
-        <button
-          onClick={handleChatSubmit}
-          style={{
-            marginTop: "10px",
-            padding: "10px 20px",
-            background: "#1a73e8",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}
-        >
-          Send
-        </button>
-        <div className="chat-answer" style={{ marginTop: "15px", whiteSpace: "pre-wrap" }}>
-          {chatAnswer && <p>{chatAnswer}</p>}
-        </div>
+        <button onClick={handleChatSubmit}>Send</button>
+        <div className="chat-answer">{chatAnswer && <p>{chatAnswer}</p>}</div>
       </div>
     </div>
   );

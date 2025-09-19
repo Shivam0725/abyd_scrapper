@@ -19,18 +19,29 @@ function BookDetail() {
     fetchBook();
   }, [id]);
 
-  if (!book) return <p>Loading...</p>;
+  if (!book) return <p className="loading">Loading...</p>;
 
   return (
-    <div className="book-detail">
-      <img src={book.thumbnail} alt={book.title} />
-      <h2>{book.title}</h2>
-      <p>£{book.price}</p>
-      <p>{book.rating} ⭐</p>
-      <p>{book.inStock ? "✅ In Stock" : "❌ Out of Stock"}</p>
-      <a href={book.url} target="_blank" rel="noopener noreferrer">Buy Now</a>
-      <br />
-      <Link to="/">⬅ Back</Link>
+    <div className="detail-container">
+      <div className="detail-card">
+        <img src={book.thumbnail} alt={book.title} />
+        <h2>{book.title}</h2>
+        <p className="price">£{book.price}</p>
+        <p className="rating">{book.rating} ⭐</p>
+        <p className="stock">{book.inStock ? "In Stock" : "Out of Stock"}</p>
+        <a
+          href={book.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="detail-link"
+        >
+          Buy Now
+        </a>
+        <br />
+        <Link to="/" className="back-link">
+          Back
+        </Link>
+      </div>
     </div>
   );
 }
